@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -34,6 +35,19 @@ public class ShortURLServiceTest {
     public void testShortenURL() {
         String shortUrl = shortURLService.shortenURL("http://ilkaygunel.com");
         assertTrue(shortUrl.contains(shortUrlDomain.concat(":").concat(shortUrlPort)));
+    }
+
+    @Test
+    public void findOriginalUrlTest() {
+        String shortUrl = shortURLService.shortenURL("http://ilkaygunel.com");
+        assertTrue(shortUrl.contains(shortUrlDomain.concat(":").concat(shortUrlPort)));
+
+        int lastIndex = shortUrl.lastIndexOf(shortUrlDomain.concat(":").concat(shortUrlPort)) +
+                (shortUrlDomain.concat(":").concat(shortUrlPort)).length() + 1;
+        String shortUrlId = shortUrl.substring(lastIndex);
+
+        String originalUrl = shortURLService.findOriginalUrl(Long.valueOf(shortUrlId));
+        assertEquals("http://ilkaygunel.com", originalUrl);
     }
 
 }

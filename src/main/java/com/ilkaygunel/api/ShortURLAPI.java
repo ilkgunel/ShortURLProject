@@ -1,5 +1,6 @@
 package com.ilkaygunel.api;
 
+import com.ilkaygunel.exception.customexceptions.NotFoundException;
 import com.ilkaygunel.service.ShortURLService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +28,7 @@ public class ShortURLAPI {
     }
 
     @GetMapping("/{shortUrlId}")
-    public ResponseEntity<Object> findAndNavigateToOriginalUrl(@PathVariable(value = "shortUrlId") final String shortUrlId) throws URISyntaxException {
+    public ResponseEntity<Object> findAndNavigateToOriginalUrl(@PathVariable(value = "shortUrlId") final String shortUrlId) throws URISyntaxException, NotFoundException {
         String originalUrl = shortURLService.findOriginalUrl(Long.valueOf(shortUrlId));
         URI originalURI = new URI(originalUrl);
         HttpHeaders httpHeaders = new HttpHeaders();

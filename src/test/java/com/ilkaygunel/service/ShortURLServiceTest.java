@@ -1,5 +1,6 @@
 package com.ilkaygunel.service;
 
+import com.ilkaygunel.exception.customexceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -38,7 +39,7 @@ public class ShortURLServiceTest {
     }
 
     @Test
-    public void findOriginalUrlTest() {
+    public void findOriginalUrlTest() throws NotFoundException {
         String shortUrl = shortURLService.shortenURL("http://ilkaygunel.com");
         assertTrue(shortUrl.contains(shortUrlDomain.concat(":").concat(shortUrlPort)));
 

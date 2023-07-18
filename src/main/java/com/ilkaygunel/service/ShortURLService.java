@@ -1,5 +1,6 @@
 package com.ilkaygunel.service;
 
+import com.ilkaygunel.exception.customexceptions.NotFoundException;
 import com.ilkaygunel.singleton.SingletonBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,11 @@ public class ShortURLService {
         return shortUrl;
     }
 
-    public String findOriginalUrl(Long shortUrlId) {
+    public String findOriginalUrl(Long shortUrlId) throws NotFoundException {
         Map<String, String> shortAndOriginalUrl = SingletonBean.getInstance().shortUrls.get(shortUrlId);
+        if (shortAndOriginalUrl == null) {
+            throw new NotFoundException("The original url can't found with this short url id:".concat(String.valueOf(shortUrlId)));
+        }
         AtomicReference<String> originalUrl = new AtomicReference<>();
         shortAndOriginalUrl.entrySet().stream().forEach(entry -> {
             originalUrl.set(entry.getKey());
